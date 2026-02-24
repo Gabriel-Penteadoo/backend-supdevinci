@@ -1,0 +1,660 @@
+{
+  "info": {
+    "name": "backend-supdevinci",
+    "description": "Postman collection generated from current NestJS controllers.\n\nPermissions bitmask cheat sheet:\n- USER_READ_PROFILE = 1\n- USER_UPDATE_PROFILE = 2\n- CONVERSATION_READ = 4\n- CONVERSATION_CREATE = 8\n- CONVERSATION_UPDATE = 16\n- CONVERSATION_DELETE = 32\n- MESSAGE_SEND = 64\n- ADMIN_MANAGE_USERS = 128\n\nRole masks:\n- USER = 127\n- MODERATOR = 127\n- ADMIN = 255\n\nAdmin endpoints use:\n- {{authToken}} (Bearer token)\n- {{userCredentialsId}}\n- {{permissionBit}}\n- {{roleName}}",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    },
+    {
+      "key": "authToken",
+      "value": ""
+    },
+    {
+      "key": "profileId",
+      "value": "1"
+    },
+    {
+      "key": "conversationId",
+      "value": "1"
+    },
+    {
+      "key": "groupId",
+      "value": "1"
+    },
+    {
+      "key": "testEmail",
+      "value": "gabrielmeira13v2.0@gmail.com"
+    },
+    {
+      "key": "userCredentialsId",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "key": "permissionBit",
+      "value": "8"
+    },
+    {
+      "key": "roleName",
+      "value": "ADMIN"
+    },
+    {
+      "key": "seedKey",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "App",
+      "item": [
+        {
+          "name": "GET /",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": []
+            }
+          }
+        },
+        {
+          "name": "POST /mail/test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"to\": \"{{testEmail}}\",\n  \"subject\": \"Test email from Postman\",\n  \"content\": \"If you receive this, SMTP is working.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mail/test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "mail",
+                "test"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /dev/seed",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-seed-key",
+                "value": "{{seedKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"users\": 3,\n  \"conversationsPerUser\": 2,\n  \"messagesPerConversation\": 5\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/dev/seed",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dev",
+                "seed"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /dev/test-image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-seed-key",
+                "value": "{{seedKey}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "note",
+                  "value": "quick manual test upload",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/dev/test-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "dev",
+                "test-image"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /auth/login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"StrongPassw0rd!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /auth/register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"StrongPassw0rd!\",\n  \"username\": \"myusername\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /auth/profile/:id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/profile/{{profileId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "profile",
+                "{{profileId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PUT /auth/permissions/grant",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userCredentialsId\": \"{{userCredentialsId}}\",\n  \"permission\": \"{{permissionBit}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/permissions/grant",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "permissions",
+                "grant"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PUT /auth/permissions/revoke",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userCredentialsId\": \"{{userCredentialsId}}\",\n  \"permission\": \"{{permissionBit}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/permissions/revoke",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "permissions",
+                "revoke"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PUT /auth/permissions/toggle",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userCredentialsId\": \"{{userCredentialsId}}\",\n  \"permission\": \"{{permissionBit}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/permissions/toggle",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "permissions",
+                "toggle"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PUT /auth/permissions/role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userCredentialsId\": \"{{userCredentialsId}}\",\n  \"role\": \"{{roleName}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/permissions/role",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "permissions",
+                "role"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Profile",
+      "item": [
+        {
+          "name": "GET /profile/:id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/profile/{{profileId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile",
+                "{{profileId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PUT /profile/me",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/profile/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "profile",
+                "me"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Message",
+      "item": [
+        {
+          "name": "POST /message/send",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Hello there\",\n  \"conversationId\": \"{{conversationId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/message/send",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "message",
+                "send"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /message/conversation/:conversationId",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/message/conversation/{{conversationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "message",
+                "conversation",
+                "{{conversationId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /message/upload-image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "conversationId",
+                  "value": "{{conversationId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "caption",
+                  "value": "Image uploaded from Postman",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/message/upload-image",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "message",
+                "upload-image"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Resource Group",
+      "item": [
+        {
+          "name": "GET /groupe/:id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/groupe/{{groupId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groupe",
+                "{{groupId}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Conversation",
+      "item": [
+        {
+          "name": "GET /conversation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/conversation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversation"
+              ]
+            }
+          }
+        },
+        {
+          "name": "POST /conversation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My conversation\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/conversation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversation"
+              ]
+            }
+          }
+        },
+        {
+          "name": "PUT /conversation",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"{{conversationId}}\",\n  \"title\": \"Updated conversation title\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/conversation",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversation"
+              ]
+            }
+          }
+        },
+        {
+          "name": "GET /conversation/:id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/conversation/{{conversationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversation",
+                "{{conversationId}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "DELETE /conversation/:id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/conversation/{{conversationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "conversation",
+                "{{conversationId}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
